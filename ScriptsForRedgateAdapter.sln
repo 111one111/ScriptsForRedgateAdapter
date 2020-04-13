@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsForRedgateAdapter", "ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.csproj", "{9B2CCD20-6304-4D7D-9198-8A68CB7F4427}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsForRedgateAdapter.Business", "ScriptsForRedgateAdapter.Business\ScriptsForRedgateAdapter.Business.csproj", "{3B9581CC-8C43-4A0A-BD90-3D3BD2A28C91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsForRedgateAdapter.DAL", "ScriptsForRedgateAdapter.DAL\ScriptsForRedgateAdapter.DAL.csproj", "{27514233-0F18-42C6-BB2D-38721A1DFAFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsForRedgateAdapter.Models", "ScriptsForRedgateAdapter.Models\ScriptsForRedgateAdapter.Models.csproj", "{7F8CF3F0-B5EA-46B8-BE92-ADB66BCE7EC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptsForRedgateAdapter.Interfaces", "ScriptsForRedgateAdapter.Interfaces\ScriptsForRedgateAdapter.Interfaces.csproj", "{B9255679-A069-48A9-A3AF-62D7DE1EBF60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptsForRedgateAdapter.Test", "ScriptsForRedgateAdapter.Test\ScriptsForRedgateAdapter.Test.csproj", "{D02382F0-0F00-4B00-9F2F-3C0F6C298294}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B2CCD20-6304-4D7D-9198-8A68CB7F4427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2CCD20-6304-4D7D-9198-8A68CB7F4427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2CCD20-6304-4D7D-9198-8A68CB7F4427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2CCD20-6304-4D7D-9198-8A68CB7F4427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9581CC-8C43-4A0A-BD90-3D3BD2A28C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9581CC-8C43-4A0A-BD90-3D3BD2A28C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9581CC-8C43-4A0A-BD90-3D3BD2A28C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9581CC-8C43-4A0A-BD90-3D3BD2A28C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27514233-0F18-42C6-BB2D-38721A1DFAFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27514233-0F18-42C6-BB2D-38721A1DFAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27514233-0F18-42C6-BB2D-38721A1DFAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27514233-0F18-42C6-BB2D-38721A1DFAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F8CF3F0-B5EA-46B8-BE92-ADB66BCE7EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F8CF3F0-B5EA-46B8-BE92-ADB66BCE7EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F8CF3F0-B5EA-46B8-BE92-ADB66BCE7EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F8CF3F0-B5EA-46B8-BE92-ADB66BCE7EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9255679-A069-48A9-A3AF-62D7DE1EBF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9255679-A069-48A9-A3AF-62D7DE1EBF60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9255679-A069-48A9-A3AF-62D7DE1EBF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9255679-A069-48A9-A3AF-62D7DE1EBF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D02382F0-0F00-4B00-9F2F-3C0F6C298294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D02382F0-0F00-4B00-9F2F-3C0F6C298294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D02382F0-0F00-4B00-9F2F-3C0F6C298294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D02382F0-0F00-4B00-9F2F-3C0F6C298294}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20EA779C-7666-4B06-93BE-FA35E5D3025D}
+	EndGlobalSection
+EndGlobal

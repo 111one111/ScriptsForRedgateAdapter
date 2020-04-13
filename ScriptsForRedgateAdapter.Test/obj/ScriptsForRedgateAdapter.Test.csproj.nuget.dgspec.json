@@ -1,0 +1,268 @@
+{
+  "format": 1,
+  "restore": {
+    "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Test\\ScriptsForRedgateAdapter.Test.csproj": {}
+  },
+  "projects": {
+    "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\ScriptsForRedgateAdapter.Business.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\ScriptsForRedgateAdapter.Business.csproj",
+        "projectName": "ScriptsForRedgateAdapter.Business",
+        "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\ScriptsForRedgateAdapter.Business.csproj",
+        "packagesPath": "C:\\Users\\One\\.nuget\\packages\\",
+        "outputPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\One\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {
+              "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj": {
+                "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj"
+              },
+              "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj": {
+                "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj",
+        "projectName": "ScriptsForRedgateAdapter.Interfaces",
+        "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj",
+        "packagesPath": "C:\\Users\\One\\.nuget\\packages\\",
+        "outputPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\One\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {
+              "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj": {
+                "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj",
+        "projectName": "ScriptsForRedgateAdapter.Models",
+        "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\ScriptsForRedgateAdapter.Models.csproj",
+        "packagesPath": "C:\\Users\\One\\.nuget\\packages\\",
+        "outputPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Models\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\One\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Test\\ScriptsForRedgateAdapter.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Test\\ScriptsForRedgateAdapter.Test.csproj",
+        "projectName": "ScriptsForRedgateAdapter.Test",
+        "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Test\\ScriptsForRedgateAdapter.Test.csproj",
+        "packagesPath": "C:\\Users\\One\\.nuget\\packages\\",
+        "outputPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\One\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.0": {
+            "projectReferences": {
+              "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\ScriptsForRedgateAdapter.Business.csproj": {
+                "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Business\\ScriptsForRedgateAdapter.Business.csproj"
+              },
+              "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj": {
+                "projectPath": "B:\\Code\\ScriptsForRedgateAdapter\\ScriptsForRedgateAdapter.Interfaces\\ScriptsForRedgateAdapter.Interfaces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[5.10.3, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.13.1, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.16.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
