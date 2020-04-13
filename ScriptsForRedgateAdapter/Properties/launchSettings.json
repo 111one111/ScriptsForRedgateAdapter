@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ScriptsForRedgateAdapter": {
+      "commandName": "Project",
+      "commandLineArgs": "730"
+    }
+  }
+}
