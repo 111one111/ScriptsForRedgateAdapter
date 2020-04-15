@@ -23,10 +23,14 @@ Go to the appsettings.json and set the directorys to where your scripts are stor
 
   Templates.Json:
         "Name": "PageSecurityRollbackScript",                                                                                                       ***Template Name***
-		"SqlCodeTemplate": "USE NewDb\r\nGO\r\nDECLARE @ID INT = ##ReplacePageID##\r\nDELETE FROM dbo.Table WHERE TableID = @TableID",  ***Sql Template for Rollback***
+		"SqlCodeTemplate": [ "USE NewDb",
+							 "GO",
+							 "DECLARE @ID INT = ##ReplacePageID##",
+							 "DELETE FROM dbo.Table WHERE TableID = @TableID"]  ***Sql Template for Rollback***
 		"ReplaceMentChars" : [ "@TableID:##ReplacePageID##"],                             ***Declare Variable Identifier and the replace charecters for the template***
 		"OutputDirectory": "B:\\Code\\Work\\DBScripts\\",                                                                    ***Directory where the new script goes.***
-		"ExistingCodeTemplate" :"USE NewDb\r\nGO\r\n"                           ***If file exists this gets added to the top before being copied to roleback script.***
+		"ExistingCodeTemplate" : ["USE NewDb",
+								  "GO"]                           ***If file exists this gets added to the top before being copied to roleback script.***
 
   History.txt This contains a list of files that have been run. clear the name from here if you need it to be rerun. ((todo/// Filename that gets copiedto the directory
              will come from the table/sproc name.))

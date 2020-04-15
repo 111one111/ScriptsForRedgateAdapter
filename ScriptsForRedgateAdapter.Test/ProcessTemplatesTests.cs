@@ -44,13 +44,13 @@ namespace ScriptsForRedgateAdapter.Test
         {
             // Arrange
             _fileAccess.Setup(method => method.GetFileNames(_settings.Value.RoleBackScriptLocation, FileExtensions.sql))
-                .Returns(new List<string>() { "1234mockscript1.sql", "12mockscript2.sql", "012_mockscript3.sql", "mockscript4.sql" });
+                .Returns(new List<string>() { "c:\\script\\1234mockscript1.sql", "c:\\script\\12mockscript2.sql", "c:\\script\\012_mockscript3.sql", "c:\\script\\mockscript4.sql" });
             string fileName = "test.sql";
             // Act
             var result = _processTemplate.GenerateRollBackFileName(fileName);
 
             //Assert
-            result.Should().Be($"{1234}_{_settings.Value.TicketNumber}_{fileName}");
+            result.Should().Be($"{1235}_{_settings.Value.TicketNumber}_{fileName}");
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace ScriptsForRedgateAdapter.Test
             var result = _processTemplate.GenerateRollBackFileName(fileName);
 
             //Assert
-            result.Should().Be($"{"014"}_{_settings.Value.TicketNumber}_{fileName}");
+            result.Should().Be($"{"015"}_{_settings.Value.TicketNumber}_{fileName}");
         }
 
         [Test]

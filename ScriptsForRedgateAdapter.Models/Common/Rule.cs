@@ -25,5 +25,10 @@ namespace ScriptsForRedgateAdapter.Models.Common
         /// For rules pertaining to replacing strings.
         /// </summary>
         public List<string> Replace { get; set; }
+
+        /// <summary>
+        /// Should the name in the script for the sproc or table be used for the table name.
+        /// </summary>
+        public bool GetScriptNameFromFile { get;set; }
     }
 }

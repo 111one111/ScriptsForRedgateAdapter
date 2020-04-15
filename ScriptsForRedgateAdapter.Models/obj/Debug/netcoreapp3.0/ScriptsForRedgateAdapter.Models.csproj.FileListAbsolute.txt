@@ -1,7 +1,0 @@
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\bin\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.deps.json
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\bin\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.dll
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\bin\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.pdb
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\obj\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.AssemblyInfoInputs.cache
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\obj\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.AssemblyInfo.cs
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\obj\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.dll
-B:\Code\ScriptsForRedgateAdapter\ScriptsForRedgateAdapter.Models\obj\Debug\netcoreapp3.0\ScriptsForRedgateAdapter.Models.pdb

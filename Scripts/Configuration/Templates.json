@@ -15,23 +15,23 @@
 	},
 	{
 		"Name": "",
-		"SqlCodeTemplate": "",
+		"SqlCodeTemplate": [""],
 		"ReplaceMentChars" : [ ""],
 		"OutputDirectory": "",
-		"ExistingCodeTemplate" :""
+		"ExistingCodeTemplate" :[""]
 	},
 	{
 		"Name": "",
-		"SqlCodeTemplate":"",
+		"SqlCodeTemplate":[""],
 		"ReplaceMentChars" : [""],
 		"OutputDirectory" :"",
-		"ExistingCodeTemplate" :""
+		"ExistingCodeTemplate" :[""]
 	},
 	{
 		"Name": "",
-		"SqlCodeTemplate":"",
+		"SqlCodeTemplate":[""],
 		"ReplaceMentChars" : [""],
 		"OutputDirectory" :"",
-		"ExistingCodeTemplate" :""
+		"ExistingCodeTemplate" :[""]
 	}
 ]

@@ -18,6 +18,9 @@ namespace ScriptsForRedgateAdapter.Business
         private readonly AppConfig _settings;
         private List<Rule> _sQLPageRules;
         private List<Rule> _generalRules;
+
+        private const string _createTable = "CREATE OR ALTER PROCEDURE";
+        private const string _creatSproc = "CREATE TABLE";
         public ProcessRules(IFileAccess<List<Rule>> fileAccess, IOptions<AppConfig> settings, IScriptCheck scriptCheck, IProcessTemplate processTemplate)
         {
             _fileAccess = fileAccess;
@@ -37,32 +40,56 @@ namespace ScriptsForRedgateAdapter.Business
 
             foreach(string scriptName in scriptNames)
             {
+                string sqlFileContent = _fileAccess.GetFileContents($"{_settings.ScriptDirectory}{scriptName}");
 
-                ApplySqlPageRules(scriptName);
+                ApplySqlPageRules(scriptName, sqlFileContent);
             }            
+        }
+
+        /// <summary>
+        /// Apply the rules without a template name, used to cleanup code and apply to all scripts.
+        /// </summary>
+        /// <param name="scriptName"></param>
+        /// <param name="sqlFileContent"></param>
+        public void ApplyGeneralRules(string scriptName, string sqlFileContent)
+        {
+            _generalRules.ForEach(rule => {
+                sqlFileContent = ApplyReplacementRules(rule.Replace, sqlFileContent);
+            });
         }
 
         /// <summary>
         /// Starts applying SQL Rules to page
         /// </summary>
-        public void ApplySqlPageRules(string scriptName)
+        public void ApplySqlPageRules(string scriptName, string sqlFileContent)
         {
-           string sqlFileContent = _fileAccess.GetFileContents($"{_settings.ScriptDirectory}{scriptName}");
-           List<Rule> relatedRules = _scriptCheck.FindRulesRelatedToScript(sqlFileContent, _sQLPageRules);
-            relatedRules.ForEach(rule =>
-            {
+
+            List<Rule> relatedRules = _scriptCheck.FindRulesRelatedToScript(sqlFileContent, _sQLPageRules);
+            relatedRules.ForEach(rule =>            {
                 sqlFileContent = ApplyReplacementRules(rule.Replace, sqlFileContent);
             });
 
-            SqlTemplate sqlTemplate = _processTemplate.GetTemplateForSqlScript(relatedRules.Where(rule => rule.TemplateName != null).FirstOrDefault());
+            Rule templateRule = relatedRules.Where(rule => rule.TemplateName != null).FirstOrDefault();
+            SqlTemplate sqlTemplate = _processTemplate.GetTemplateForSqlScript(templateRule);
 
-            if (relatedRules.Count ==0)
+            if (relatedRules.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"No Matching rules for this script type for {scriptName}");
                 Console.ResetColor();
                 return;
             }
+
+            ProcessRulesOutput(sqlTemplate, scriptName, sqlFileContent);
+        }
+
+        /// <summary>
+        /// Used for the final save
+        /// </summary>
+        /// <param name="sqlTemplate"></param>
+        /// <param name="scriptName"></param>
+        /// <param name="sqlFileContent"></param>
+        private void ProcessRulesOutput(SqlTemplate sqlTemplate, string scriptName, string sqlFileContent) {
 
             if (_scriptCheck.CheckIfScriptExists(sqlTemplate, scriptName))
             {
@@ -76,6 +103,43 @@ namespace ScriptsForRedgateAdapter.Business
                 _fileAccess.WriteToFile($"{sqlTemplate.OutputDirectory}{scriptName}", sqlFileContent);                
                 _fileAccess.AddLineToFile(_settings.ScriptHistoryFile, scriptName);
             }
+        }
+
+        /// <summary>
+        /// Uses the name of the Sproc or Procedure to generate the filename.
+        /// </summary>
+        /// <param name="sqlCode"></param>
+        /// <returns></returns>
+        public string ApplyNewScriptName(string sqlCode)
+        {
+            string[] sqlLines = sqlCode.Split("\r\n");
+            string lineWithFileName = sqlLines.Where(line => line.Contains(_creatSproc)
+                                        || line.Contains(_createTable)).FirstOrDefault();
+
+            if (lineWithFileName.Contains(_creatSproc))
+            {
+                return NameExtractor(lineWithFileName, _creatSproc);
+            } 
+
+            if (lineWithFileName.Contains(_createTable))
+            {
+                return NameExtractor(lineWithFileName, _createTable);
+            }
+
+            return string.Empty;
+        }
+
+        private string NameExtractor(string line, string identifier)
+        {            
+            string newName = line.Replace(_creatSproc, "").Trim();
+            if (newName.Split(" ").Count() > 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Generating name for script not success full. {newName} not Updated");
+                Console.ResetColor();
+                return string.Empty;
+            }
+            return newName;
         }
         
         /// <summary>
