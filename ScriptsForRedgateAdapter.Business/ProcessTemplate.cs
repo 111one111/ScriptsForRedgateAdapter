@@ -29,7 +29,35 @@ namespace ScriptsForRedgateAdapter.Business
         /// <returns></returns>
         public List<SqlTemplate> GetTemplates()
         {
-            return _fileAccess.LoadJsonFile(_settings.SqlTemplatesFile);
+            var templates = _fileAccess.LoadJsonFile(_settings.SqlTemplatesFile);
+            templates.ForEach(template => {
+                template.ExistingCodeTemplate = ProcessTemplateArray(template.ExistingCodeTemplateArray);
+                template.SqlCodeTemplate = ProcessTemplateArray(template.SqlCodeTemplateArray);
+            });
+            return templates;
+        }
+
+        /// <summary>
+        /// used to convert the string array of an sql template into a string
+        /// </summary>
+        /// <param name="sqlArray"></param>
+        /// <returns></returns>
+        public string ProcessTemplateArray(List<string> sqlArray)
+        {
+            string sql = "";
+            sqlArray.ForEach(sqlLine =>
+            {
+                if (sqlLine == sqlArray[0])
+                {
+                    sql = sqlLine;
+                }
+                else
+                {
+                    sql = $"{sql}\r\n{sqlLine}";
+                }
+            });
+
+            return sql;
         }
 
         /// <summary>
@@ -148,15 +176,27 @@ namespace ScriptsForRedgateAdapter.Business
                     return;
                 }
 
-                string sqlLine = sql.Where(declare => declare.Contains($"CREATE TABLE ") || declare.Contains("CREATE OR ALTER PROCEDURE")).FirstOrDefault();
-                if (sqlLine == "")
+                string sqlLine = sql.Where(declare => declare.Contains("CREATE TABLE ") || declare.Contains("CREATE OR ALTER PROCEDURE ")).FirstOrDefault();
+                if (string.IsNullOrEmpty(sqlLine))
                 {
                     return;
                 }
-                string value = sqlLine.Split(".")[1]
-                                            .Replace("[", "")
-                                            .Replace("](", "")
-                                            .Replace("]","");
+                string value = "";
+                if (sqlLine.Split(".").Count() == 2)
+                {
+                    value = sqlLine.Split(".")[1]
+                                                .Replace("[", "")
+                                                .Replace("](", "")
+                                                .Replace("]", "");
+                }
+                else
+                {
+                    value = sqlLine.Replace("CREATE TABLE ", "")
+                                   .Replace("CREATE OR ALTER PROCEDURE ", "")
+                                   .Replace("[", "")
+                                   .Replace("](", "")
+                                   .Replace("]", "");
+                }
                 sqlTemplate.SqlCodeTemplate = sqlTemplate.SqlCodeTemplate.Replace(replace, value);
             });
 

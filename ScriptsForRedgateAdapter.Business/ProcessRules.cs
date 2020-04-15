@@ -129,9 +129,15 @@ namespace ScriptsForRedgateAdapter.Business
             return string.Empty;
         }
 
-        private string NameExtractor(string line, string identifier)
+        /// <summary>
+        /// Gets the name out of the line of text that contains the identifier by removing the identifier then trimming.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        public string NameExtractor(string line, string identifier)
         {            
-            string newName = line.Replace(_creatSproc, "").Trim();
+            string newName = line.Replace(identifier, "").Trim();
             if (newName.Split(" ").Count() > 1)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
