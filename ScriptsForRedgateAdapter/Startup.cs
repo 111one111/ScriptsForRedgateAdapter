@@ -24,6 +24,7 @@ namespace ScriptsForRedgateAdapter
             services.AddTransient<IScriptsForRedgateAdapter, ScriptsForRedgateAdapter>();
             services.AddTransient<IProcessTemplate, ProcessTemplate>();
             services.AddTransient<IProcessRules, ProcessRules>();
+            services.AddTransient<IReplaceLogic, ReplaceLogic>();
 
             services.AddOptions();            
             services.Configure<AppConfig>(options => { 

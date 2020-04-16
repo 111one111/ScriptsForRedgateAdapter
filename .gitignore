@@ -1,4 +1,11 @@
 /.vs/
 /*/bin/
 /*/obj/
-/*/obj/Debug/
+/ScriptsForRedgateAdapter/obj/
+/ScriptsForRedgateAdapter.Models/obj/
+/ScriptsForRedgateAdapter.DAL/obj/
+/ScriptsForRedgateAdapter.Test/obj/
+/ScriptsForRedgateAdapter.Interfaces/obj/
+/ScriptsForRedgateAdapter.Business/obj/
+
+

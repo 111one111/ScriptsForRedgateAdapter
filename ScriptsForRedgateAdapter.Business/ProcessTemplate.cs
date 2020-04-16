@@ -14,11 +14,14 @@ namespace ScriptsForRedgateAdapter.Business
 {
     public class ProcessTemplate : IProcessTemplate
     {
-        IFileAccess<List<SqlTemplate>> _fileAccess;
+        private readonly IFileAccess<List<SqlTemplate>> _fileAccess;
+        private readonly IReplaceLogic _replaceLogic;
+
         AppConfig _settings;
 
-        public ProcessTemplate(IFileAccess<List<SqlTemplate>> fileAccess, IOptions<AppConfig> settings)
+        public ProcessTemplate(IReplaceLogic replaceLogic, IFileAccess<List<SqlTemplate>> fileAccess, IOptions<AppConfig> settings)
         {
+            _replaceLogic = replaceLogic;
             _fileAccess = fileAccess;
             _settings = settings.Value;
         }
@@ -155,79 +158,10 @@ namespace ScriptsForRedgateAdapter.Business
         {
             string rollBackFileName = GenerateRollBackFileName(filename);           
 
-            sqlTemplate = ReplaceDeclareValues(newSql, sqlTemplate);
-            sqlTemplate = ReplaceSchemaNamesInTemplate(newSql, sqlTemplate);
+            sqlTemplate = _replaceLogic.ReplaceDeclareValues(newSql, sqlTemplate);
+            sqlTemplate = _replaceLogic.ReplaceSchemaNamesInTemplate(newSql, sqlTemplate);
 
             _fileAccess.WriteToFile($"{_settings.RoleBackScriptLocation}{rollBackFileName}", sqlTemplate.SqlCodeTemplate);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="newSql"></param>
-        /// <param name="sqlTemplate"></param>
-        /// <returns></returns>
-        public SqlTemplate ReplaceSchemaNamesInTemplate(string newSql, SqlTemplate sqlTemplate)
-        {
-            string[] sql = newSql.Split("\r\n");
-            sqlTemplate.ReplaceMentChars.ForEach(replace => {
-                if (replace.Contains(":"))
-                {
-                    return;
-                }
-
-                string sqlLine = sql.Where(declare => declare.Contains("CREATE TABLE ") || declare.Contains("CREATE OR ALTER PROCEDURE ")).FirstOrDefault();
-                if (string.IsNullOrEmpty(sqlLine))
-                {
-                    return;
-                }
-                string value = "";
-                if (sqlLine.Split(".").Count() == 2)
-                {
-                    value = sqlLine.Split(".")[1]
-                                                .Replace("[", "")
-                                                .Replace("](", "")
-                                                .Replace("]", "");
-                }
-                else
-                {
-                    value = sqlLine.Replace("CREATE TABLE ", "")
-                                   .Replace("CREATE OR ALTER PROCEDURE ", "")
-                                   .Replace("[", "")
-                                   .Replace("](", "")
-                                   .Replace("]", "");
-                }
-                sqlTemplate.SqlCodeTemplate = sqlTemplate.SqlCodeTemplate.Replace(replace, value);
-            });
-
-            return sqlTemplate;
-        }
-
-        /// <summary>
-        /// Replaces values that are declared. Only works 1 per line.
-        /// </summary>
-        /// <param name="newSql"></param>
-        /// <param name="sqlTemplate"></param>
-        /// <returns></returns>
-        public SqlTemplate ReplaceDeclareValues(string newSql, SqlTemplate sqlTemplate)
-        {
-            string[] sql = newSql.Split("\r\n");
-            sqlTemplate.ReplaceMentChars.ForEach(replace => {
-                if (!replace.Contains(":"))
-                {
-                    return;
-                }
-                string[] replacmentKey = replace.Split(":");
-                string sqlLine = sql.Where(declare => declare.Contains($"DECLARE {replacmentKey[0]}")).FirstOrDefault();
-                if (sqlLine == "")
-                {
-                    return;
-                }
-                string value = sqlLine.Split("=")[1];
-                sqlTemplate.SqlCodeTemplate = sqlTemplate.SqlCodeTemplate.Replace(replacmentKey[1], value);
-            });
-
-            return sqlTemplate;
         }
     }
 }

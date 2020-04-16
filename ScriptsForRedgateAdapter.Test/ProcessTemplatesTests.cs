@@ -3,11 +3,13 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using ScriptsForRedgateAdapter.Business;
+using ScriptsForRedgateAdapter.Interfaces.Business;
 using ScriptsForRedgateAdapter.Interfaces.DAL;
 using ScriptsForRedgateAdapter.Models.Common;
 using ScriptsForRedgateAdapter.Models.Enums;
 using ScriptsForRedgateAdapter.Models.Templates;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScriptsForRedgateAdapter.Test
 {
@@ -15,7 +17,8 @@ namespace ScriptsForRedgateAdapter.Test
     public class ProcessTemplatesTests
     {
         private Mock<IFileAccess<List<SqlTemplate>>> _fileAccess;
-        private ProcessTemplate _processTemplate;
+        private Mock<IReplaceLogic> _replaceLogic;
+        private ProcessTemplate _processTemplate;        
         private IOptions<AppConfig> _settings = Options.Create(
             new AppConfig()
             {
@@ -36,7 +39,8 @@ namespace ScriptsForRedgateAdapter.Test
         public void Setup()
         {
             _fileAccess = new Mock<IFileAccess<List<SqlTemplate>>>();
-            _processTemplate = new ProcessTemplate(_fileAccess.Object, _settings);
+            _replaceLogic = new Mock<IReplaceLogic>();
+            _processTemplate = new ProcessTemplate(_replaceLogic.Object, _fileAccess.Object, _settings);
         }
 
         [Test]
@@ -79,6 +83,109 @@ namespace ScriptsForRedgateAdapter.Test
 
             // Assert
             result.Should().Be(1234);
+        }
+
+        [Test]
+        public void GetTemplates_Should_Return_A_List_Of_Templates_With_Array_Sql_Populating_String()
+        {
+            // Arrange
+            var codeTemplateArrayValues = new List<string>() { "this is a test", "to see if the lines", "join with return carriage", "###ReplaceMe###" };
+            var replacmentChars = new List<string> { "###ReplaceMe###" };
+            string name = "test template";
+            string outputDir = "c:\\test\\";
+
+            List<SqlTemplate> testTemplate = new List<SqlTemplate>() {
+                new SqlTemplate(){
+                    ExistingCodeTemplateArray = codeTemplateArrayValues,
+                    SqlCodeTemplateArray = codeTemplateArrayValues,
+                    Name = name,
+                    OutputDirectory = outputDir,
+                    ReplaceMentChars = replacmentChars                    
+                }
+            };
+            _fileAccess.Setup(method => method.LoadJsonFile(_settings.Value.SqlTemplatesFile))
+                .Returns(testTemplate);
+
+            // Act
+            var result = _processTemplate.GetTemplates().First();
+
+            //Assert
+            string answer = "this is a test\r\nto see if the lines\r\njoin with return carriage\r\n###ReplaceMe###";
+            result.SqlCodeTemplate.Should().Be(answer);
+            result.ExistingCodeTemplate.Should().Be(answer);
+            result.Name.Should().Be(name);
+            result.OutputDirectory.Should().Be(outputDir);
+            result.ReplaceMentChars.First().Should().Be(replacmentChars.First());
+        }
+
+        [Test]
+        public void ProcessTemplateArray_Should_Return_String()
+        {
+            // Arrange
+            var codeTemplateArrayValues = new List<string>() { "this is a test", "to see if the lines", "join with return carriage", "###ReplaceMe###" };
+
+            // Act
+            var result = _processTemplate.ProcessTemplateArray(codeTemplateArrayValues);
+
+            // Assert
+            result.Should().Be("this is a test\r\nto see if the lines\r\njoin with return carriage\r\n###ReplaceMe###");
+        }
+
+        [Test]
+        public void GetTemplateForSqlScript_Should_Return_Matching_Template()
+        {
+            // Arrange
+            var codeTemplateArrayValues = new List<string>() { "this is a test", "to see if the lines", "join with return carriage", "###ReplaceMe###" };
+            var replacmentChars = new List<string> { "###ReplaceMe###" };
+            string name = "test template";
+            string outputDir = "c:\\test\\";
+
+            List<SqlTemplate> testTemplate = new List<SqlTemplate>() {
+                new SqlTemplate(){
+                    ExistingCodeTemplateArray = codeTemplateArrayValues,
+                    SqlCodeTemplateArray = codeTemplateArrayValues,
+                    Name = name,
+                    OutputDirectory = outputDir,
+                    ReplaceMentChars = replacmentChars
+                },
+                new SqlTemplate()
+                {
+                    Name = "DummyData",
+                    OutputDirectory = "c:\\dummy",
+                    ReplaceMentChars = new List<string>(){ "##Dummy##" },
+                    ExistingCodeTemplateArray = new List<string>(){ "Dummy Data" },
+                    SqlCodeTemplateArray =new List<string>(){ "Dummy Data" },
+                },
+                new SqlTemplate()
+                {                    
+                    OutputDirectory = "c:\\dummy2",
+                    ReplaceMentChars = new List<string>(){ "##Dummy2##" },
+                    ExistingCodeTemplateArray = new List<string>(){ "Dummy Data 2" },
+                    SqlCodeTemplateArray =new List<string>(){ "Dummy Data 2" },
+                }
+            };
+
+            _fileAccess.Setup(method => method.LoadJsonFile(_settings.Value.SqlTemplatesFile))
+               .Returns(testTemplate);
+
+            var rule = new Rule()
+            {
+                TemplateName = name,
+                GetScriptNameFromFile = false,
+                ScriptIdentifier = new List<string>() { "this is a test" },
+                Replace = new List<string>() { "this is a test:This is another Test" }
+            };
+
+            // Act
+            var result = _processTemplate.GetTemplateForSqlScript(rule);
+
+            //Assert
+            string answer = "this is a test\r\nto see if the lines\r\njoin with return carriage\r\n###ReplaceMe###";
+            result.SqlCodeTemplate.Should().Be(answer);
+            result.ExistingCodeTemplate.Should().Be(answer);
+            result.Name.Should().Be(name);
+            result.OutputDirectory.Should().Be(outputDir);
+            result.ReplaceMentChars.First().Should().Be(replacmentChars.First());
         }
     }
 }

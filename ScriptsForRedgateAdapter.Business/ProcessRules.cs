@@ -15,18 +15,18 @@ namespace ScriptsForRedgateAdapter.Business
         private readonly IFileAccess<List<Rule>> _fileAccess;
         private readonly IScriptCheck _scriptCheck;
         private readonly IProcessTemplate _processTemplate;
+        private readonly IReplaceLogic _replaceLogic;
         private readonly AppConfig _settings;
         private List<Rule> _sQLPageRules;
         private List<Rule> _generalRules;
 
-        private const string _createTable = "CREATE OR ALTER PROCEDURE";
-        private const string _creatSproc = "CREATE TABLE";
-        public ProcessRules(IFileAccess<List<Rule>> fileAccess, IOptions<AppConfig> settings, IScriptCheck scriptCheck, IProcessTemplate processTemplate)
+        public ProcessRules(IFileAccess<List<Rule>> fileAccess, IOptions<AppConfig> settings, IScriptCheck scriptCheck, IProcessTemplate processTemplate, IReplaceLogic replaceLogic)
         {
             _fileAccess = fileAccess;
             _settings = settings.Value;
             _scriptCheck = scriptCheck;
             _processTemplate = processTemplate;
+            _replaceLogic = replaceLogic;
         }
 
        
@@ -41,6 +41,8 @@ namespace ScriptsForRedgateAdapter.Business
             foreach(string scriptName in scriptNames)
             {
                 string sqlFileContent = _fileAccess.GetFileContents($"{_settings.ScriptDirectory}{scriptName}");
+                sqlFileContent = ApplyGeneralRules(sqlFileContent);
+                
 
                 ApplySqlPageRules(scriptName, sqlFileContent);
             }            
@@ -51,11 +53,13 @@ namespace ScriptsForRedgateAdapter.Business
         /// </summary>
         /// <param name="scriptName"></param>
         /// <param name="sqlFileContent"></param>
-        public void ApplyGeneralRules(string scriptName, string sqlFileContent)
+        public string ApplyGeneralRules(string sqlFileContent)
         {
-            _generalRules.ForEach(rule => {
-                sqlFileContent = ApplyReplacementRules(rule.Replace, sqlFileContent);
+            _generalRules.ForEach(rule =>
+            {
+                sqlFileContent = _replaceLogic.ApplyReplacementRules(rule.Replace, sqlFileContent);
             });
+            return sqlFileContent;
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace ScriptsForRedgateAdapter.Business
 
             List<Rule> relatedRules = _scriptCheck.FindRulesRelatedToScript(sqlFileContent, _sQLPageRules);
             relatedRules.ForEach(rule =>            {
-                sqlFileContent = ApplyReplacementRules(rule.Replace, sqlFileContent);
+                sqlFileContent = _replaceLogic.ApplyReplacementRules(rule.Replace, sqlFileContent);
             });
 
             Rule templateRule = relatedRules.Where(rule => rule.TemplateName != null).FirstOrDefault();
@@ -77,6 +81,16 @@ namespace ScriptsForRedgateAdapter.Business
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"No Matching rules for this script type for {scriptName}");
                 Console.ResetColor();
+                return;
+            }
+
+            if (templateRule.GetScriptNameFromFile)
+            {
+                scriptName = _replaceLogic.ApplyNewScriptName(sqlFileContent);
+            }
+
+            if (string.IsNullOrEmpty(scriptName))
+            {
                 return;
             }
 
@@ -103,77 +117,6 @@ namespace ScriptsForRedgateAdapter.Business
                 _fileAccess.WriteToFile($"{sqlTemplate.OutputDirectory}{scriptName}", sqlFileContent);                
                 _fileAccess.AddLineToFile(_settings.ScriptHistoryFile, scriptName);
             }
-        }
-
-        /// <summary>
-        /// Uses the name of the Sproc or Procedure to generate the filename.
-        /// </summary>
-        /// <param name="sqlCode"></param>
-        /// <returns></returns>
-        public string ApplyNewScriptName(string sqlCode)
-        {
-            string[] sqlLines = sqlCode.Split("\r\n");
-            string lineWithFileName = sqlLines.Where(line => line.Contains(_creatSproc)
-                                        || line.Contains(_createTable)).FirstOrDefault();
-
-            if (lineWithFileName.Contains(_creatSproc))
-            {
-                return NameExtractor(lineWithFileName, _creatSproc);
-            } 
-
-            if (lineWithFileName.Contains(_createTable))
-            {
-                return NameExtractor(lineWithFileName, _createTable);
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Gets the name out of the line of text that contains the identifier by removing the identifier then trimming.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        public string NameExtractor(string line, string identifier)
-        {            
-            string newName = line.Replace(identifier, "").Trim();
-            if (newName.Split(" ").Count() > 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Generating name for script not success full. {newName} not Updated");
-                Console.ResetColor();
-                return string.Empty;
-            }
-            return newName;
-        }
-        
-        /// <summary>
-        /// Applies replacement rules to SQL code.
-        /// </summary>
-        /// <param name="replacmentRule"></param>
-        /// <param name="sqlCode"></param>
-        /// <returns></returns>
-        public string ApplyReplacementRules(List<string> replacmentRule, string sqlCode)
-        {
-            replacmentRule.ForEach(rule => {
-                string[] definition = rule.Split(":");
-                if (definition.Length == 1)
-                {
-                    sqlCode = sqlCode.Replace(definition[0], "");
-                } else if (definition.Length == 2)
-                {
-                    sqlCode = sqlCode.Replace(definition[0], definition[1]);
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"There was an issue with replacement rules. {rule}");
-                    Console.ResetColor();
-                }
-            });
-
-            return sqlCode;
         }
 
         /// <summary>
