@@ -39,11 +39,16 @@ Go to the appsettings.json and set the directorys to where your scripts are stor
 	
 	***List of chars to replace. If you want to replace with a blank just wright the text to replace.
            If the text to be replaced is followed by : then the text to replace with can be added after.***
-        "Replace": ["USE NewDb\r\nGO\r\n"]                             
+        "Replace": ["USE NewDb\r\nGO\r\n"]
+	
+	***Gets the file name from the file if set to true.***
+	GetScriptNameFromFile:true or false
 
   Templates.Json:
   	***Template Name***
-        "Name": "PageSecurityRollbackScript",                                                                                                   ***Sql Template for Rollback***
+        "Name": "PageSecurityRollbackScript",
+	
+	***Sql Template for Rollback***
 	"SqlCodeTemplateArray": [ "USE NewDb",
 				 "GO",
 				 "DECLARE @ID INT = ##ReplacePageID##",
