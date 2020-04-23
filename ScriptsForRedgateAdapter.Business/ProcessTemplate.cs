@@ -114,6 +114,11 @@ namespace ScriptsForRedgateAdapter.Business
             List<string> roleBackFiles = _fileAccess
                 .GetFileNames(_settings.RoleBackScriptLocation, FileExtensions.sql);
 
+            if (roleBackFiles.Count == 0)
+            {
+                return 1;
+            }
+
             List<int> fileNumbers = new List<int>();
             roleBackFiles.ForEach(name => {
                string fileName = Path.GetFileName(name);

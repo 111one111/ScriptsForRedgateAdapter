@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using Moq;
+using ScriptsForRedgateAdapter.Models.Templates;
 
 namespace ScriptsForRedgateAdapter.Test
 {
@@ -104,7 +105,7 @@ namespace ScriptsForRedgateAdapter.Test
                 }
             };
 
-            string sql = "tblPage procedere";
+            string sql = "tblPage procedure";
 
             // Act
             var result = _scriptCheck.FindRulesRelatedToScript(sql, rules);

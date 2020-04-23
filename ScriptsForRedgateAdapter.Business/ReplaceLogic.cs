@@ -8,8 +8,8 @@ namespace ScriptsForRedgateAdapter.Business
 {
     public class ReplaceLogic : IReplaceLogic
     {
-        private const string _createTable = "CREATE OR ALTER PROCEDURE";
-        private const string _creatSproc = "CREATE TABLE";
+        private const string _createTable = "CREATE OR ALTER PROCEDURE ";
+        private const string _creatSproc = "CREATE TABLE ";
 
         /// <summary>
         /// Applies replacement rules to SQL code.
@@ -98,7 +98,7 @@ namespace ScriptsForRedgateAdapter.Business
                     return;
                 }
 
-                string sqlLine = sql.Where(declare => declare.Contains("CREATE TABLE ") || declare.Contains("CREATE OR ALTER PROCEDURE ")).FirstOrDefault();
+                string sqlLine = sql.Where(declare => declare.Contains(_createTable) || declare.Contains(_creatSproc)).FirstOrDefault();
                 if (string.IsNullOrEmpty(sqlLine))
                 {
                     return;
@@ -107,17 +107,17 @@ namespace ScriptsForRedgateAdapter.Business
                 if (sqlLine.Split(".").Count() == 2)
                 {
                     value = sqlLine.Split(".")[1]
-                                                .Replace("[", "")
-                                                .Replace("](", "")
-                                                .Replace("]", "");
+                                                .Replace("[", string.Empty)
+                                                .Replace("](", string.Empty)
+                                                .Replace("]", string.Empty);
                 }
                 else
                 {
-                    value = sqlLine.Replace("CREATE TABLE ", "")
-                                   .Replace("CREATE OR ALTER PROCEDURE ", "")
-                                   .Replace("[", "")
-                                   .Replace("](", "")
-                                   .Replace("]", "");
+                    value = sqlLine.Replace(_createTable, string.Empty)
+                                   .Replace(_creatSproc, string.Empty)
+                                   .Replace("[", string.Empty)
+                                   .Replace("](", string.Empty)
+                                   .Replace("]", string.Empty);
                 }
                 sqlTemplate.SqlCodeTemplate = sqlTemplate.SqlCodeTemplate.Replace(replace, value);
             });

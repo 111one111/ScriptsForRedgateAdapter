@@ -18,7 +18,7 @@ namespace ScriptsForRedgateAdapter.Test
     {
         private Mock<IFileAccess<List<SqlTemplate>>> _fileAccess;
         private Mock<IReplaceLogic> _replaceLogic;
-        private ProcessTemplate _processTemplate;        
+        private ProcessTemplate _processTemplate;
         private IOptions<AppConfig> _settings = Options.Create(
             new AppConfig()
             {
@@ -100,7 +100,7 @@ namespace ScriptsForRedgateAdapter.Test
                     SqlCodeTemplateArray = codeTemplateArrayValues,
                     Name = name,
                     OutputDirectory = outputDir,
-                    ReplaceMentChars = replacmentChars                    
+                    ReplaceMentChars = replacmentChars
                 }
             };
             _fileAccess.Setup(method => method.LoadJsonFile(_settings.Value.SqlTemplatesFile))
@@ -157,7 +157,7 @@ namespace ScriptsForRedgateAdapter.Test
                     SqlCodeTemplateArray =new List<string>(){ "Dummy Data" },
                 },
                 new SqlTemplate()
-                {                    
+                {
                     OutputDirectory = "c:\\dummy2",
                     ReplaceMentChars = new List<string>(){ "##Dummy2##" },
                     ExistingCodeTemplateArray = new List<string>(){ "Dummy Data 2" },
@@ -186,6 +186,57 @@ namespace ScriptsForRedgateAdapter.Test
             result.Name.Should().Be(name);
             result.OutputDirectory.Should().Be(outputDir);
             result.ReplaceMentChars.First().Should().Be(replacmentChars.First());
+        }
+
+        [Test]
+        public void ApplyExistingCodeTemplate_Does_Not_Throw_Error()
+        {
+            // Arrange
+            SqlTemplate testTemplate =
+                new SqlTemplate()
+                {
+                    ExistingCodeTemplateArray = new List<string>() { "this is a test", "to see if the lines", "join with return carriage", "###ReplaceMe###" },
+                    SqlCodeTemplateArray = new List<string> { "###ReplaceMe###" },
+                    Name = "test template",
+                    OutputDirectory = "c:\\test\\",
+                    ReplaceMentChars = new List<string> { "###ReplaceMe###" }
+                };
+
+            _fileAccess.Setup(method => method.GetFileNames(_settings.Value.RoleBackScriptLocation, FileExtensions.sql))
+                .Returns(new List<string>() { "14mockscript1.sql", "12mockscript2.sql", "13_mockscript3.sql" });
+
+
+
+            // Act
+
+            // Assert
+            Assert.DoesNotThrow(() => _processTemplate.ApplyExistingCodeTemplate("test.sql", testTemplate));
+        }
+
+        [Test]
+        public void ApplyRollBackTemplate_Does_Not_Throw_Error()
+        {
+            // Arrange
+            SqlTemplate testTemplate =
+               new SqlTemplate()
+               {
+                   ExistingCodeTemplateArray = new List<string>() { "this is a test", "to see if the lines", "join with return carriage", "###ReplaceMe###" },
+                   SqlCodeTemplateArray = new List<string> { "###ReplaceMe###" },
+                   Name = "test template",
+                   OutputDirectory = "c:\\test\\",
+                   ReplaceMentChars = new List<string> { "###ReplaceMe###" }
+               };
+            _replaceLogic.Setup(method => method.ReplaceDeclareValues("USE DBOne\r\nGO", testTemplate))
+                .Returns(testTemplate);
+            _replaceLogic.Setup(method => method.ReplaceSchemaNamesInTemplate("USE DBOne\r\nGO", testTemplate))
+                .Returns(testTemplate);
+
+            _fileAccess.Setup(method => method.GetFileNames(_settings.Value.RoleBackScriptLocation, FileExtensions.sql))
+                .Returns(new List<string>() { "14mockscript1.sql", "12mockscript2.sql", "13_mockscript3.sql" });
+            // Act
+
+            // Assert
+            Assert.DoesNotThrow(() => _processTemplate.ApplyRollBackTemplate("test.sql", "USE DBOne\r\nGO", testTemplate));
         }
     }
 }
